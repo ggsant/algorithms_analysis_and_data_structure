@@ -14,10 +14,8 @@ void main() {
 int findMaxValue(List<int> vector, int start, int end) {
   late int max;
   if (start == end) {
-    // se o vetor tiver apenas uma posição
     return max = vector[start];
   } else if (start + 1 == end) {
-    // se o vetor tiver apenas duas posições
     if (vector[start] < vector[end]) {
       return max = vector[end];
     } else {
