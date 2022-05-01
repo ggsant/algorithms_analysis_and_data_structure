@@ -48,14 +48,16 @@ class Stack<T> {
     if (_list.length < _sizeMax) {
       _list.add(element);
     } else {
-      print('Error: cannot add element. Stack already at maximum size of: ${_sizeMax} elements');
+      print(
+          'Error: cannot add element. Stack already at maximum size of: $_sizeMax elements');
     }
   }
 
   /// get the top of the stack and delete it.
   T pop() {
     if (isEmpty) {
-      print('Can\'t use pop with empty stack\n consider checking for size or isEmpty before calling pop');
+      print(
+          'Can\'t use pop with empty stack\n consider checking for size or isEmpty before calling pop');
     }
     T result = _list.last;
     _list.removeLast();
@@ -64,7 +66,8 @@ class Stack<T> {
 
   T peek() {
     if (isEmpty) {
-      print('Can\'t use top with empty stack\n consider checking for size or isEmpty before calling top');
+      print(
+          'Can\'t use top with empty stack\n consider checking for size or isEmpty before calling top');
     }
     print('The top element is ${_list.last}');
     return _list.last;

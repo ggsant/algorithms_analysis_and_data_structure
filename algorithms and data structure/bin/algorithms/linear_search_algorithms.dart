@@ -1,6 +1,4 @@
-/**
- * Retorna -1 caso não encontre ou a posição, caso encontre.
- */
+/// Retorna -1 caso não encontre ou a posição, caso encontre.
 
 void main() {
   final vector = [-6, -1, 3, 7, 10, 27, 35, 37, 52];

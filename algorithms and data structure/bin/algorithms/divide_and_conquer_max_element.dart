@@ -1,9 +1,5 @@
-import 'dart:math';
-
-/**
-Encontrar o elemento maximo em um vetor de inteiros positivos nao ordenados 
-usando dividir e conquistar, sem ordenar
- */
+/// Encontrar o elemento maximo em um vetor de inteiros positivos nao ordenados
+/// usando dividir e conquistar, sem ordenar
 
 void main() {
   final vector = [3, 27, 12, 55, 2, 36, 10, 19, 150];
