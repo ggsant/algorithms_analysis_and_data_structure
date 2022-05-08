@@ -32,7 +32,7 @@
 // 3. Isolates the part of the array that has the value
 
 // 4. Repeats steps 1–3 until the value is found
-class BinarySearch
+class BinarySearchSolution
 
 fun main(){
     print(binarySearch(23, arrayOf(12, 3, 24, 5, 10, 23, 9)))
