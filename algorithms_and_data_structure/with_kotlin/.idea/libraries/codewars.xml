@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="codewars">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/codewars/replaceVowels.jar!/" />
+      <root url="jar://$PROJECT_DIR$/codewars/ex01.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

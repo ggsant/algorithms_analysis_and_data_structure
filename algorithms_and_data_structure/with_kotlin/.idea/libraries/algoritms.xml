@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="algoritms">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/algoritms/BinarySearch.jar!/" />
+      <root url="jar://$PROJECT_DIR$/algoritms/SquaresOfSortedArray.jar!/" />
+      <root url="jar://$PROJECT_DIR$/algoritms/SearchInsertPosition.jar!/" />
+      <root url="jar://$PROJECT_DIR$/algoritms/tempCodeRunnerFile.jar!/" />
+      <root url="jar://$PROJECT_DIR$/algoritms/FirstBadVersion.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
