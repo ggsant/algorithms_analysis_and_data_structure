@@ -9,32 +9,17 @@ void main() {
   list2.append(5);
   list2.append(6);
   print(list2);
-  final list3 = DoublyLinkedList<int>();
-  list3.push(3);
-  list3.push(2);
-  list3.push(1);
-  print('Before: $list3');
-  var middleNode = list3.nodeAt(1)!;
-  list3.insertAfter(middleNode, 42);
-  print('After: $list3');
-  final list4 = DoublyLinkedList<int>();
-  list4.push(3);
-  list4.push(2);
-  list4.push(1);
-  print('Before: $list4');
-  var middleNodee = list4.nodeAt(1)!;
-  print('middleNodee: ${middleNodee.data}');
-
-  list4.insertBefore(middleNodee, 42);
-  print('After: $list4');
-
   final list5 = DoublyLinkedList<int>();
-  list5.push(3);
-  list5.push(2);
-  list5.push(1);
-  print('Before: $list5');
+  list5.append(3);
+  list5.append(2);
+  list5.append(1);
+  print('head: ${list5.toString()}');
+
+  print('Before: ${list5.length}');
   list5.pop();
-  print('After: $list5');
+  print('head: ${list5.toString()}');
+
+  print('Before: ${list5.length}');
 
   final list6 = DoublyLinkedList<int>();
   list6.push(3);
@@ -46,118 +31,131 @@ void main() {
 }
 
 class Node<T> {
-  Node(this.data, {this.refNext, this.refPrevious});
-  T data;
-  Node<T>? refNext;
-  Node<T>? refPrevious;
+  Node({required this.value, this.next, this.previous});
+  T value;
+  Node<T>? next;
+  Node<T>? previous;
 
   @override
   String toString() {
-    if (refPrevious == null) return '$data ';
-    return '$refPrevious -> $data ';
+    return '$value';
   }
 }
 
-class DoublyLinkedList<T> {
-  Node<T>? head;
-  Node<T>? tail;
+abstract class LinkedList<E> {
+  Node<E>? head;
+  Node<E>? tail;
+  bool get isEmpty;
+  void append(E value);
+  void push(E value);
+  E? pop();
+  E? removeLast();
+}
 
-  DoublyLinkedList() : head = null;
+class DoublyLinkedList<E> extends Iterable<E> implements LinkedList<E> {
+  @override
+  Node<E>? head;
 
+  @override
+  Node<E>? tail;
+
+  @override
   bool get isEmpty => head == null;
 
-  void push(T data) {
-    final newNode = Node(data, refNext: head);
-    if (head != null) {
-      head!.refPrevious = newNode;
-    }
-    head = newNode;
-    tail ??= head;
-  }
+  @override
+  void append(E value) {
+    // convert the value to a node
+    final newNode = Node(value: value, previous: tail);
 
-  void append(T data) {
+    // update the pointers at the tail of the list
     if (isEmpty) {
-      push(data);
-      return;
+      head = newNode;
+    } else {
+      tail!.next = newNode;
+      // handle lists with only one element
+      head?.next ??= newNode;
     }
-    final newNode = Node(data, refPrevious: tail);
-    tail!.refNext = newNode;
     tail = newNode;
   }
 
-  Node<T>? nodeAt(int index) {
-    var currentNode = head;
-    var currentIndex = 0;
-    while (currentNode != null && currentIndex < index) {
-      currentNode = currentNode.refNext;
-      currentIndex += 1;
-    }
-    return currentNode;
-  }
+  @override
+  void push(E value) {
+    // convert the value to a node
+    final newNode = Node(value: value, next: head);
 
-  void insertAfter(Node<T> prevNode, T data) {
-    if (tail == prevNode) {
-      append(data);
-    }
-
-    final newNode = Node(data, refNext: prevNode.refNext);
-
-    prevNode.refNext = newNode;
-    newNode.refPrevious = prevNode;
-    if (newNode.refNext != null) {
-      newNode.refNext!.refPrevious = newNode; // atualiza o refPrev do nó que vem depois do novo nó
-    }
-  }
-
-  void insertBefore(Node<T> nextNode, T data) {
-    if (head == nextNode) {
-      push(data);
-    }
-
-    final newNode = Node(data, refNext: nextNode);
-
-    newNode.refPrevious = nextNode.refPrevious;
-    nextNode.refPrevious = newNode;
-
-    if (newNode.refNext != null) {
-      newNode.refPrevious!.refNext = newNode; // atualiza o refPrev do nó que vem antes do novo nó
-    }
-  }
-
-  void pop() {
-    head = head?.refNext;
+    // update the pointers at the tail of the list
     if (isEmpty) {
-      tail = null;
+      tail = newNode;
+    } else {
+      head!.previous = newNode;
+      // handle lists with only one element
+      tail?.previous ??= newNode;
     }
-  }
-
-  void removeLast() {
-    if (head?.refNext == null) pop();
-    var current = head;
-    while (current!.refNext != tail) {
-      current = current.refNext;
-    }
-    tail = current;
-    tail?.refNext = null;
-  }
-
-  void removeAfter(Node<T> node) {
-    if (node.refNext == tail) {
-      tail = node;
-    }
-    node.refNext = node.refNext?.refNext;
-  }
-
-  void removeBefore(Node<T> node) {
-    if (node.refPrevious == head) {
-      head = node;
-    }
-    node.refPrevious = node.refPrevious?.refPrevious;
+    head = newNode;
   }
 
   @override
-  String toString() {
-    if (isEmpty) return 'Empty list';
-    return tail.toString();
+  E? pop() {
+    // handle an empty list
+    if (isEmpty) return null;
+
+    // save the return value
+    final value = head?.value;
+
+    // handle a list of length one
+    if (head?.next == null) {
+      head = null;
+      tail = null;
+      return value;
+    }
+
+    // update the pointers
+    head = head?.next;
+    head?.previous = null;
+
+    return value;
+  }
+
+  @override
+  E? removeLast() {
+    // delegate lists with one or zero items to pop
+    if (tail?.previous == null) return pop();
+
+    // save the return value
+    final value = tail?.value;
+
+    // update the pointers
+    tail = tail?.previous;
+    tail?.next = null;
+
+    return value;
+  }
+
+  @override
+  Iterator<E> get iterator => _LinkedListIterator(this);
+
+  @override
+  String toString() => '[${join(', ')}]';
+}
+
+class _LinkedListIterator<E> implements Iterator<E> {
+  _LinkedListIterator(DoublyLinkedList<E> list) : _list = list;
+  final DoublyLinkedList<E> _list;
+  Node<E>? _currentNode;
+  bool _firstPass = true;
+
+  @override
+  E get current => _currentNode!.value;
+
+  @override
+  bool moveNext() {
+    if (_list.isEmpty) return false;
+    if (_firstPass) {
+      _currentNode = _list.head;
+      _firstPass = false;
+    } else {
+      _currentNode = _currentNode?.next;
+    }
+    return _currentNode != null;
   }
 }
