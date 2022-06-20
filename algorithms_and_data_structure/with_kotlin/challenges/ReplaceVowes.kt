@@ -10,6 +10,6 @@
 fun main() {
     val inputString0 = "HI"
     println(replace(inputString0))
+    fun replace(s: String): String = Regex("[aeiouAEIOU]").replace(s, "!")
 }
 
-fun replace(s: String): String = Regex("[aeiouAEIOU]").replace(s, "!")

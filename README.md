@@ -15,6 +15,7 @@
 * doubly linked list
 * singly linked list
 * stack
+* queue
  
 ### Challenges
 * OOP calculator
@@ -22,11 +23,15 @@
 # Kotlin
   
 ### Algorithms
-
-  
+* Binary search 
+* Fist Bad version
+* Search insert position
+* Squares of Sorted array
 ### Data Structure 
  
 ### Challenges
-  
+  * count of positives sum of negatives
+  * invert values
+  * replace vowees
 
   
