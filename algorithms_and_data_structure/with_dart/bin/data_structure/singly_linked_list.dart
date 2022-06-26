@@ -10,86 +10,121 @@ void main() {
 }
 
 class Node<T> {
-  Node(this.data, {this.refNext});
-  T data;
-  Node<T>? refNext;
+  Node({required this.value, this.next});
+  T value;
+  Node<T>? next;
 
   @override
   String toString() {
-    if (refNext == null) return '$data';
-    return '$data -> ${refNext.toString()}';
+    if (next == null) return '$value';
+    return '$value -> ${next.toString()}';
   }
 }
 
-class SinglyLinkedList<T> {
-  Node<T>? head;
-  Node<T>? tail;
+class SinglyLinkedList<E> extends Iterable<E> {
+  Node<E>? head;
+  Node<E>? tail;
 
-  SinglyLinkedList() : head = null;
-
-  bool get isEmpty => head == null;
-
-  void push(T data) {
-    final newNode = Node(data, refNext: head);
-    head = newNode;
+  void push(E value) {
+    head = Node(value: value, next: head);
     tail ??= head;
   }
 
-  void append(T data) {
+  void append(E value) {
     if (isEmpty) {
-      push(data);
+      push(value);
       return;
     }
-    final newNode = Node(data);
-    tail!.refNext = newNode;
-    tail = newNode;
+    tail!.next = Node(value: value);
+    tail = tail!.next;
   }
 
-  Node<T>? nodeAt(int index) {
+  Node<E>? nodeAt(int index) {
     var currentNode = head;
     var currentIndex = 0;
     while (currentNode != null && currentIndex < index) {
-      currentNode = currentNode.refNext;
+      currentNode = currentNode.next;
       currentIndex += 1;
     }
     return currentNode;
   }
 
-  void insertAfter(Node<T> node, T data) {
+  Node<E> insertAfter(Node<E> node, E value) {
     if (tail == node) {
-      append(data);
+      append(value);
+      return tail!;
     }
-    final newNode = Node(data, refNext: node.refNext);
-    node.refNext = newNode;
+    node.next = Node(value: value, next: node.next);
+    return node.next!;
   }
 
-  void pop() {
-    head = head?.refNext;
+  E? pop() {
+    final value = head?.value;
+    head = head?.next;
     if (isEmpty) {
       tail = null;
     }
+    return value;
   }
 
-  void removeLast() {
-    if (head?.refNext == null) pop();
+  E? removeLast() {
+    if (head?.next == null) return pop();
+
     var current = head;
-    while (current!.refNext != tail) {
-      current = current.refNext;
+    while (current!.next != tail) {
+      current = current.next;
     }
+
+    final value = tail?.value;
     tail = current;
-    tail?.refNext = null;
+    tail?.next = null;
+    return value;
   }
 
-  void removeAfter(Node<T> node) {
-    if (node.refNext == tail) {
+  E? removeAfter(Node<E> node) {
+    final value = node.next?.value;
+    if (node.next == tail) {
       tail = node;
     }
-    node.refNext = node.refNext?.refNext;
+    node.next = node.next?.next;
+    return value;
   }
+
+  @override
+  bool get isEmpty => head == null;
+
+  @override
+  Iterator<E> get iterator => _SinglyLinkedListIterator(this);
 
   @override
   String toString() {
     if (isEmpty) return 'Empty list';
     return head.toString();
+  }
+}
+
+class _SinglyLinkedListIterator<E> implements Iterator<E> {
+  _SinglyLinkedListIterator(SinglyLinkedList<E> list) : _list = list;
+  final SinglyLinkedList<E> _list;
+
+  Node<E>? _currentNode;
+
+  @override
+  E get current => _currentNode!.value;
+
+  bool _firstPass = true;
+
+  @override
+  bool moveNext() {
+    if (_list.isEmpty) return false;
+
+    if (_firstPass) {
+      _currentNode = _list.head;
+      _firstPass = false;
+    } else {
+      _currentNode = _currentNode?.next;
+    }
+
+    return _currentNode != null;
   }
 }
