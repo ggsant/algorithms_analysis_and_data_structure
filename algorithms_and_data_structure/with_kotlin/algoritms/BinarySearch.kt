@@ -1,62 +1,34 @@
-// Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.
-
-// You must write an algorithm with O(log n) runtime complexity.
-
- 
-
-// Example 1:
-
-// Input: nums = [-1,0,3,5,9,12], target = 9
-// Output: 4
-// Explanation: 9 exists in nums and its index is 4
-// Example 2:
-
-// Input: nums = [-1,0,3,5,9,12], target = 2
-// Output: -1
-// Explanation: 2 does not exist in nums so return -1
- 
-
-// Constraints:
-
-// 1 <= nums.length <= 104
-// -104 < nums[i], target < 104
-// All the integers in nums are unique.
-// nums is sorted in ascending order.
-
-// Binary Search
-
-// 1. Specifies the index in the middle of the array
-
-// 2. Checks whether or not the value of the middle index is greater or less than the value we’re looking for
-
-// 3. Isolates the part of the array that has the value
-
-// 4. Repeats steps 1–3 until the value is found
 class BinarySearchSolution
 
-fun main(){
-    print(binarySearch(23, arrayOf(12, 3, 24, 5, 10, 23, 9)))
-
+fun main() {
+    print(binarySearch(arrayOf(12, 3, 24, 5, 10, 23, 9), 23))
+}
+/**
+ * @param array is an array where the element should be found
+ * @param key is an element which should be found
+ * @return index of the element
+ */
+fun <T : Comparable<T>> binarySearch(array: Array<T>, key: T): Int {
+    return binarySearchHelper(array, key, 0, array.size - 1)
 }
 
-fun binarySearch(target: Int, array: Array<Int>): Int {
-    array.sort();
-
-    var index: Int = 0
-    var end = array.size - 1
-
-    while(index <= end){
-
-        val middle: Int = (index + end) / 2
-
-            
-        if (target < array[middle]){
-            end = middle - 1
-        } else if(target > array[middle]){
-            index = middle + 1
-        } else {
-            return middle
-        }
+/**
+ * @param array The array to search
+ * @param key The element you are looking for
+ * @param left is the index of the first element at array.
+ * @param is the index of the last element at array.
+ * @return the location of the key or -1 if the element is not found
+ */
+fun <T : Comparable<T>> binarySearchHelper(array: Array<T>, key: T, start: Int, end: Int): Int {
+    if (start > end) {
+        return -1
     }
-    return -1
+
+    val mid = start + (end - start) / 2
+
+    return when {
+        array[mid].compareTo(key) == 0 -> mid
+        array[mid].compareTo(key) > 0 -> binarySearchHelper(array, key, start, mid - 1)
+        else -> binarySearchHelper(array, key, mid + 1, end)
+    }
 }

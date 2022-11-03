@@ -1,20 +1,27 @@
-/// Retorna -1 caso não encontre ou a posição, caso encontre.
+/// Idea: Go through the vector, analyzing each position i.
+/// If A[i].key equals K, then it found the position and returns i.
+/// If you went through the entire vector and no element equal to K exists,
+/// then return -1.
 
 void main() {
-  final vector = [-6, -1, 3, 7, 10, 27, 35, 37, 52];
+  final array = [3, -10, 30, 7, 100, 27, 3, 7, 52];
   var k1 = 27;
-  var k2 = 2;
-  final n = vector.length;
-  print('Result for k1 ${linearSearch(vector, n, k1)}');
-  print('Result for k2 ${linearSearch(vector, n, k2)}');
+  var k2 = -1;
+  var n = array.length;
+  print('Result for k1 ${linearSearch(array, n, k1)}');
+  print('Result for k2 ${linearSearch(array, n, k2)}');
 }
 
-int linearSearch(List<int> vector, int n, int k) {
-  for (var i = 0; i < n; i++) {
-    if (vector[i] == k) {
+/// [array] is the list of data on which the linear search will perform the operation.
+///
+/// [n] is the size of the array.
+///
+/// [k] is the key that must be fetched in the array.
+int linearSearch(List<int> array, int n, int k) {
+  for (int i = 0; i <= n; i++) {
+    if (array[i] == k) {
       return i;
     }
-    print('iteração $i');
   }
   return -1;
 }
