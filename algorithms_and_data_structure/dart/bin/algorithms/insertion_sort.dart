@@ -1,39 +1,25 @@
 void main() {
   final vector = [3, 6, 2, 12, 4, 9, 10, 1, 5];
-  print('Result for ascendingInsertionSort ${ascendingInsertionSort(vector)}');
-  print('Result for descendingInsertionSort ${descendingInsertionSort(vector)}');
+  final ascending = insertionSort(vector, (a, b) => a - b);
+  final descending = insertionSort(vector, (a, b) => b - a);
+  print('Resultado da ordenação crescente: $ascending');
+  print('Resultado da ordenação decrescente: $descending');
 }
 
-List<int> ascendingInsertionSort(List<int> array) {
-  for (var i = 1; i < array.length; i++) {
-    final key = array[i];
+List<int> insertionSort(List<int> array, int Function(int a, int b) compare) {
+  final sortedArray = List<int>.from(array); // Evita modificar a lista original
+  for (var i = 1; i < sortedArray.length; i++) {
+    final key = sortedArray[i];
     int j = i - 1;
 
-    // Move os elementos maiores que key uma posição à frente
-    while (j >= 0 && array[j] > key) {
-      array[j + 1] = array[j];
+    // Move os elementos de acordo com o comparador
+    while (j >= 0 && compare(sortedArray[j], key) > 0) {
+      sortedArray[j + 1] = sortedArray[j];
       j--;
     }
 
-    // Coloca o key na posição correta
-    array[j + 1] = key;
+    // Coloca a chave na posição correta
+    sortedArray[j + 1] = key;
   }
-  return array;
-}
-
-List<int> descendingInsertionSort(List<int> array) {
-  for (var i = 1; i < array.length; i++) {
-    final key = array[i]; //
-    int j = i - 1;
-
-    // Move os elementos maiores que key uma posição à frente
-    while (j >= 0 && array[j] < key) {
-      array[j + 1] = array[j];
-      j--;
-    }
-
-    // Coloca o key na posição correta
-    array[j + 1] = key;
-  }
-  return array;
+  return sortedArray;
 }
